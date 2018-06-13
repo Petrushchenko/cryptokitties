@@ -1,16 +1,25 @@
 'use strict'
 
 window.onload = function () {
-	
-/*
-	var btnMore = getElem('.more', '.more__title');
-	var dropdownMore = getElem('.more', '.more__items');
 
-	btnMore.addEveneListener('click', opening);
-	function opening () {
-		dropdownMore.classList.add("opened");
-	};
-	*/
+	var btnMore = getElem('.more', '.more__title')[0];
+	var dropdownMore = getElem('.more', '.more__items')[0];
+	var counter = 0;
+	
+	btnMore.addEventListener('click', function opening () {
+		
+		if(counter % 2 == 0) {
+			console.log(counter);
+			dropdownMore.classList.add("opened");
+			counter++;
+
+		} else {
+			dropdownMore.classList.remove('opened');
+			counter++;
+		}	
+	});
+	
+	
 	var gallery = document.querySelector('.gallery__items');
 	var kitty = document.querySelector('#template');
 
@@ -26,7 +35,6 @@ window.onload = function () {
 	getCats('https://ma-cats-api.herokuapp.com/api/cats', imagesList);
 	
 
-	
 }
 
 function getElem (selector1, selector2) {
