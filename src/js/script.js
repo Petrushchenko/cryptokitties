@@ -2,10 +2,31 @@
 
 window.onload = function () {
 	
+/*
+	var btnMore = getElem('.more', '.more__title');
+	var dropdownMore = getElem('.more', '.more__items');
+
+	btnMore.addEveneListener('click', opening);
+	function opening () {
+		dropdownMore.classList.add("opened");
+	};
+	*/
+	var gallery = document.querySelector('.gallery__items');
+	var kitty = document.querySelector('#template');
+
+	for (var i = 0; i < 50 ; i++) {
+		gallery.appendChild(kitty.content.cloneNode(true));
+		
+	}
+
 	var imagesList = getElem('.gallery__item', 'img');
 
 	bgColor(imagesList);
 
+	getCats('https://ma-cats-api.herokuapp.com/api/cats', imagesList);
+	
+
+	
 }
 
 function getElem (selector1, selector2) {
@@ -41,3 +62,34 @@ function enumeration (ar, n, j) {
 	}
 	return (res);
 };
+
+
+function getCats(url, elems) {
+	var request = new XMLHttpRequest();
+
+	request.onload = function() {
+	  	if (request.status >= 200 && request.status < 400) {
+		    var data = JSON.parse(request.responseText).cats;
+		    for (var i = 0; i < data.length; i++) {
+		  		for (var key in data[i]) {
+				  	if (key == 'img_url') {
+
+						var img = elems[i].removeAttribute('src');
+						img = elems[i].setAttribute('src', data[i][key]);
+				  	}
+				}
+		    	
+		    }
+		   
+		} else {
+			alert('Ooops!');
+		    return;
+		}
+	};
+	
+	request.open('GET', url, true);
+
+	request.send();
+};
+
+
