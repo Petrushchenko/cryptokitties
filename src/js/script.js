@@ -32,9 +32,15 @@ window.onload = function () {
 
 	bgColor(imagesList);
 
-	getCats('https://ma-cats-api.herokuapp.com/api/cats', imagesList);
-	
+	var kittyNames = getElem('.kitty__details', 'span:first-child');
 
+	var kittyCategory =  getElem('.kitty__details', 'span:last-child');
+
+	var kittyPrice =  getElem('.kitty__status', 'p > span');
+
+		
+	getCats('https://ma-cats-api.herokuapp.com/api/cats', imagesList, kittyNames, kittyCategory, kittyPrice);
+	
 }
 
 function getElem (selector1, selector2) {
@@ -72,18 +78,30 @@ function enumeration (ar, n, j) {
 };
 
 
-function getCats(url, elems) {
+function getCats(url, imgList, namesList, categoryList, priceList) {
 	var request = new XMLHttpRequest();
 
 	request.onload = function() {
 	  	if (request.status >= 200 && request.status < 400) {
+	  		
 		    var data = JSON.parse(request.responseText).cats;
+		    console.log(data);
 		    for (var i = 0; i < data.length; i++) {
+
 		  		for (var key in data[i]) {
 				  	if (key == 'img_url') {
 
-						var img = elems[i].removeAttribute('src');
-						img = elems[i].setAttribute('src', data[i][key]);
+						var img = imgList[i].removeAttribute('src');
+						img = imgList[i].setAttribute('src', data[i][key]);
+				  	}
+				  	if (key == 'name') {
+				  		namesList[i].textContent = data[i][key];
+				  	}
+				  	if (key == 'category') {
+				  		categoryList[i].textContent = data[i][key];
+				  	}
+				  	if (key == 'price') {
+				  		priceList[i].textContent = data[i][key];
 				  	}
 				}
 		    	
